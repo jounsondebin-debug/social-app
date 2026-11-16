@@ -4,7 +4,7 @@ export default function Home({ posts, addComment, like, poke, deleteFunc }) {
   const [currentId, setCurrentId] = useState(0);
   const [comment, setComment] = useState("");
   const currentPost = posts[currentId];
-  const userDetails = JSON.parse(localStorage.getItem('userDetails'))
+  const userDetails = JSON.parse(localStorage.getItem('userDetails')) || {}
   
 
   function changePost(dir) {
