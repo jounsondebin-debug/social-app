@@ -4,14 +4,21 @@ import Home from "./pages/Home"
 import Profile from "./pages/Profile"
 import Create from "./pages/Create"
 import Settings from "./pages/Settings"
+import { supabase } from "./lib/supabaseClient";
 function App() {
-  
-  const [posts, setPosts] = useState(() => {
-   const saved = localStorage.getItem("posts");
-    return saved ? JSON.parse(saved) : [
-      
-    ]
-})
+
+  const [posts, setPosts] = useState([]);
+
+  async function loadPosts() {
+    const { data, error } = await supabase.from("posts").select("*").order("created_at");
+    if (error) return console.error(error);
+    setPosts(data.map(p => ({ ...p, creatorId: p.creator_id, comments: [] })));
+  }
+
+  useEffect(() => {
+    loadPosts();
+  }, []);
+
   
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") || "dark"
@@ -26,9 +33,7 @@ function App() {
     localStorage.setItem("accent", accent)
   }, [accent])
 
-   useEffect(() => {
-    localStorage.setItem("posts", JSON.stringify(posts));
-  }, [posts]);
+
   
    useEffect(() => {
        document.documentElement.dataset.theme = theme;
@@ -58,44 +63,40 @@ function App() {
      }))
    }
    
-   function deletePost(postId) {
-      setPosts(prev => prev.filter(post => {
-          return postId !== post.id;
-      }))
-   }
+  async function deletePost(postId) {
+  const { error } = await supabase.from("posts").delete().eq("id", postId);
+  if (error) return console.error(error);
 
-  function poke(postId, pokes) {
-     setPosts(prev => prev.map((post) => {
-        if(postId === post.id) {
-          return {
-            ...post,
-            pokes: pokes + 1
-          }
-        } return post;
-     }))
-  }
+  setPosts(prev => prev.filter(post => post.id !== postId));
+}
 
-   function like(postId, likes, liked) {
-      
-     setPosts(prev => prev.map((post) => {
-        if(postId === post.id && liked === "likes") {
-          return {
-            ...post, 
-            liked: "liked",
-            likes: likes + 1
-          }
-        } else if(postId === post.id && liked === "dislikes") {
-           return {
-            ...post, 
-            liked: "disliked",
-            likes: likes - 1
-           }
-        } else {
-          return post
-        }
-     }))
+async function poke(postId, pokes) {
+  const { error } = await supabase
+    .from("posts")
+    .update({ pokes: (pokes ?? 0) + 1 })
+    .eq("id", postId);
+  if (error) return console.error(error);
 
-   }
+  setPosts(prev => prev.map(post =>
+    post.id === postId ? { ...post, pokes: (pokes ?? 0) + 1 } : post
+  ));
+}
+
+  async function like(postId, likes, liked) {
+  const newLikes = (likes ?? 0) + (liked === "likes" ? 1 : -1);
+
+  const { error } = await supabase
+    .from("posts")
+    .update({ likes: newLikes })
+    .eq("id", postId);
+  if (error) return console.error(error);
+
+  setPosts(prev => prev.map(post =>
+    post.id === postId
+      ? { ...post, likes: newLikes, liked: liked === "likes" ? "liked" : "disliked" }
+      : post
+  ));
+}
 
   return (
    <BrowserRouter>
@@ -112,7 +113,7 @@ function App() {
         <Routes>
            <Route path = "/" element = {<Home posts={posts} addComment={addComment} like = {like} poke ={poke} deleteFunc={deletePost}/>}/>  
            <Route path = "/profile" element = {<Profile posts={posts}/>}/>  
-           <Route path = "/create" element = {<Create setPosts={setPosts} posts = {posts}/>}/> 
+           <Route path = "/create" element = {<Create setPosts={setPosts} posts = {posts} loadPosts={loadPosts}/>}/> 
            <Route path = "/settings" element = {<Settings theme = {theme} setTheme={setTheme} accent={accent} setAccent={setAccent}/>}></Route> 
         </Routes>
       </div>

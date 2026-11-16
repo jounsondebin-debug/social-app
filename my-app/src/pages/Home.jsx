@@ -5,6 +5,7 @@ export default function Home({ posts, addComment, like, poke, deleteFunc }) {
   const [comment, setComment] = useState("");
   const currentPost = posts[currentId];
   const userDetails = JSON.parse(localStorage.getItem('userDetails'))
+  
 
   function changePost(dir) {
     if (dir === "left") setCurrentId(c => c - 1);
@@ -34,6 +35,9 @@ export default function Home({ posts, addComment, like, poke, deleteFunc }) {
               <h1 className="post-text">{currentPost.text}</h1>
               {currentPost.creatorId === userDetails.userId && (<button className="del-btn" onClick = {() => {
                 deleteFunc(currentPost.id)
+                if(currentId) {
+                  setCurrentId(i => i - 1)
+                }
               }}>X</button>)}
               </div> 
               <div className="creator">
