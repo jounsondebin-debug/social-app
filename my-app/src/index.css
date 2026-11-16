@@ -1,0 +1,549 @@
+/* ================= COLORS ================= */
+:root {
+  --bg: #f0f2f0;
+  --card: #ffffff;
+  --border: #dfe3df;
+  --divider: #e7ebe7;
+  --text: #1b1f1c;
+  --muted: #687068;
+  --soft: #f0f2f0;
+  --header-bg: #ffffff;
+  --nav-text: #5f665f;
+  --nav-hover: #eef1ee;
+  --btn-text: #ffffff;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --danger: #d03b2f;
+  --danger-soft: #fbe4e1;
+
+  /* default accent: green */
+  --main: #2f9e44;
+  --main-hover: #278a3a;
+  --main-soft: #e3f3e6;
+}
+
+[data-theme="dark"] {
+  --bg: #121412;
+  --card: #1c1f1c;
+  --border: #2d322d;
+  --divider: #2a2f2a;
+  --text: #e6ebe6;
+  --muted: #9aa39a;
+  --soft: #262a26;
+  --header-bg: #1c1f1c;
+  --nav-text: #b9c1b9;
+  --nav-hover: #262a26;
+  --btn-text: #0d0f0d;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --danger: #ff6b5e;
+  --danger-soft: #3a1f1c;
+
+  --main: #3ddc6a;
+  --main-hover: #34c25d;
+  --main-soft: #1d3324;
+}
+
+/* ---------- accents (light) ---------- */
+[data-accent="orange"] { --main: #e0661f; --main-hover: #c75917; --main-soft: #fcebdf; }
+[data-accent="purple"] { --main: #8a4fd8; --main-hover: #7840c4; --main-soft: #efe6fb; }
+[data-accent="blue"]   { --main: #2f6fdb; --main-hover: #255fc2; --main-soft: #e3ecfb; }
+
+/* ---------- accents (dark) ---------- */
+[data-theme="dark"][data-accent="orange"] { --main: #ff8a3d; --main-hover: #f07a2c; --main-soft: #3a2616; }
+[data-theme="dark"][data-accent="purple"] { --main: #b57bff; --main-hover: #a367f5; --main-soft: #2c2140; }
+[data-theme="dark"][data-accent="blue"]   { --main: #5b9bff; --main-hover: #4a8af2; --main-soft: #1c2a42; }
+
+/* ================= BASE ================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.4;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.2s, color 0.2s;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+/* ================= TOP BAR ================= */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 58px;
+  padding: 0 20px;
+  background: var(--header-bg);
+  box-shadow: var(--shadow);
+}
+
+/* round logo; change the letter to your site's */
+.navbar::before {
+  content: "[social]";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px; 
+  color: var(--main);
+  font-size: 22px;
+  font-weight: 800;
+  padding: 30px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-link {
+  padding: 9px 16px;
+  border-radius: 10px;
+  color: var(--nav-text);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-link:hover {
+  background: var(--nav-hover);
+  color: var(--main);
+}
+
+/* ================= LAYOUT ================= */
+.main {
+  padding: 24px 16px 48px;
+}
+
+.page {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.card-title {
+  margin-bottom: 14px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.empty {
+  padding: 36px 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+/* ================= POSTS ================= */
+.post {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px 0 6px;
+  cursor: pointer; /* clicking a post pokes it */
+}
+
+.post-creator {
+  order: -1; /* name on top */
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.post-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.post-text {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.post-stats {
+  display: flex;
+  gap: 14px;
+}
+
+.post-stats h3 {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* like / dislike row inside a post: wide flat buttons */
+.post .post-nav {
+  display: flex;
+  gap: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--divider);
+}
+
+.post .post-nav .btn-primary {
+  flex: 1;
+  padding: 9px 0;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.post .post-nav .btn-primary:hover:not(:disabled) {
+  background: var(--soft);
+  color: var(--text);
+}
+
+.post .post-nav .btn-primary:disabled {
+  background: var(--main-soft);
+  color: var(--main);
+  opacity: 1;
+}
+
+/* delete button: subtle until hovered */
+.del-btn {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.del-btn:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* arrows at the bottom of the card */
+.card > .post-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--divider);
+}
+
+.arrow-btn {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: var(--soft);
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.arrow-btn:hover:not(:disabled) {
+  background: var(--main-soft);
+  color: var(--main);
+}
+
+.arrow-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ================= COMMENTS ================= */
+.comments {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.comments .card-title {
+  margin-bottom: 2px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.comment {
+  max-width: 100%;
+  padding: 8px 14px;
+  border-radius: 18px;
+  background: var(--soft);
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.comment-creator {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ================= INPUTS & BUTTONS ================= */
+.create-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.create-input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 16px;
+  border: none;
+  border-radius: 22px;
+  background: var(--soft);
+  color: var(--text);
+  font-size: 15px;
+  outline: none;
+  transition: box-shadow 0.15s;
+}
+
+.create-input:focus {
+  box-shadow: 0 0 0 2px var(--main);
+}
+
+.btn-primary {
+  padding: 9px 18px;
+  border: none;
+  border-radius: 10px;
+  background: var(--main);
+  color: var(--btn-text);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--main-hover);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ================= SETTINGS ================= */
+.card > .btn-primary,
+.card > select.btn-primary {
+  display: inline-block;
+  margin: 6px 0;
+}
+
+.card > br {
+  content: "";
+  display: block;
+  height: 4px;
+}
+
+select.btn-primary {
+  min-width: 140px;
+  padding-right: 32px;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--btn-text) 50%),
+    linear-gradient(135deg, var(--btn-text) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+}
+
+/* ================= PROFILE ================= */
+.profile-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-row {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--divider);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.form-label {
+  width: 90px;
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--text);
+  font-size: 15px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--main);
+  box-shadow: 0 0 0 3px var(--main-soft);
+}
+
+.form-input[readonly] {
+  background: var(--soft);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.post-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.post-list:empty::before {
+  content: "You haven't posted yet.";
+  color: var(--muted);
+}
+
+.post-list-item {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--soft);
+  word-break: break-word;
+}
+
+/* profile picture (if you add it) */
+.pfp-section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.pfp {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 3px var(--card), 0 0 0 5px var(--main);
+}
+
+.pfp-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--soft);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.pfp-section input[type="file"] {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.pfp-section input[type="file"]::file-selector-button {
+  margin-right: 10px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 10px;
+  background: var(--soft);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pfp-section input[type="file"]::file-selector-button:hover {
+  background: var(--main-soft);
+  color: var(--main);
+}
+
+/* ================= PHONES ================= */
+@media (max-width: 600px) {
+  .navbar {
+    gap: 8px;
+    padding: 0 10px;
+  }
+  .nav-link {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+  .main {
+    padding: 14px 10px 40px;
+  }
+  .card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .form-label {
+    width: auto;
+  }
+}
+.post-pfp {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+.creator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%
+}
