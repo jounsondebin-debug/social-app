@@ -480,3 +480,7 @@ select {
   align-items: center;
   justify-content: space-between;
 }
+.post-text {
+  font-size: 3rem;
+  font-weight: 600;
+}
